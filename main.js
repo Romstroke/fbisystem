@@ -183,10 +183,3 @@ app.get('/area51', verificar, (req, res) => {
         res.status(401).send('Error: ' + error.message); //EN QUE SITUACION OCURRIRIA, EN QUE NO ESTUVIERA VERIFICADO O CUANDO VENZA EL TOKEN?
     }
 });
-
-//http://localhost:3000/area51?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-// .eyJ1c2VyRW5jb250cmFkbyI6eyJlbWFpbCI6Indob0BmYmkuY29tIiwicGFzc3dvcmQiOiJtZSJ9LCJleHAiOjE3MTYyNjIzMjAsImlhdCI6MTcxNjI2MjM3N30
-// .fJmy4VezW2yn8xkLF8HJltgXjxmvOH8y_-bECRhvOWI
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW5jb250cmFkbyI6eyJlbWFpbCI6Indob0BmYmkuY29tIiwicGFzc3dvcmQiOiJtZSJ9LCJleHAiOjE3MTYyNjM2NzIsImlhdCI6MTcxNjI2NDQ4MH0
-// .leI_WFY7NxvYte4TC6gWSzDg6LLA-kL2m4crqjvQFnE
