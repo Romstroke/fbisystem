@@ -12,7 +12,7 @@ const agentes = require('./data/agentes.js')
 // console.log(agentes.results);
 const tiempoExpiracion = Math.floor(Date.now() / 1000) + 120; // expira en 2 minutos
 // const options = { expiresIn: '2m' }; //se tiene que llamar expiresIn si o si
-const clave = process.env.CLAVE_SECRETA; //EN QUE MOMENTO OTRA PERSONA PUEDE USAR ESTA CLAVE O COMO
+const clave = process.env.CLAVE_SECRETA; 
 
 //levantando servidor en puerto 3000
 app.listen(3000, () => { console.log('Servidor levantado en puerto 3000'); });
@@ -37,7 +37,7 @@ app.get('/SignIn', (req, res) => {
             //si lo ingresado coincide, se crea un token para ese usuario
             //sign recibe el payload que es un objeto y una clave //DE DONDE TOMA EL HEADER QUE ES EL HEADER no sé creo qe es automatico...
             // la fecha de vencimiento se entrega en la propiedad exp
-            // const token = jwt.sign({ userEncontrado, exp: tiempoExpiracion }, clave);
+            // const token = jwt.sign({ userEncontrado, clave, options);
             const token = jwt.sign({ userEncontrado, exp: tiempoExpiracion}, clave);
             // console.log('token signed ',token)
             // res.send('Ingresaste a tu cuenta, bienvenido');
@@ -45,7 +45,6 @@ app.get('/SignIn', (req, res) => {
             //devolver html con email 
             //link redirigir a ruta restringida(qwue pide un token)
             //sesionstorage //persistencia
-            //PROBAR PONIENDO UN HTML IMPORTADO Y PASARLO COMO UNA VARIABLE 
             res.status(200).send(`
         <a href="/area51?token=${token}"> 
             <p> Ingresar al Area 51 </p> 
@@ -125,21 +124,7 @@ app.get('/area51', verificar, (req, res) => {
     // console.log(req) user viene como propiedad del objeto req
     const user = req.user;
     try {
-        // Simular un error lanzando una excepción manualmente
         // throw new Error('Acceso no permitido');
-        // const token = req.query.token;
-        // if (!token) {
-        //     res.status(401).send("No hay token, no esta Autorizado");
-        // } else {
-        //     jwt.verify(token, clave, (err, data) => {
-        //         console.log("Valor de Data: ", data);
-        //         err ? 
-        //         res.status(403).send("Token inválido o ha expirado")
-        //         : 
-        //         res.status(200).send(`Esto es el area 51, la nada misma. ${data.email}, tiene usted 2 minutos desde ahora para proceder.`);
-        //     });
-        // }
-        // Esta línea no se ejecutará debido al error lanzado arriba
         res.status(200).send(`
         <style>
             *{
@@ -158,7 +143,7 @@ app.get('/area51', verificar, (req, res) => {
                 display:block;
             }
         </style>
-        <h2>Es un placer tenerle de vuelta ${user.userEncontrado.email}, tiene usted 2 minutos para extirpar crías al alien.</h2>
+        <h2>Es un placer tenerle de vuelta ${user.userEncontrado.email}, tiene usted menos de 2 minutos para extirpar crías al alien.</h2>
         <img id="img" src="/alien_autopsy.jpeg">
         <audio autoplay src="silbido.m4a"></audio>
         <h1 id="emoji"></h1>
@@ -170,7 +155,7 @@ app.get('/area51', verificar, (req, res) => {
                emoji.innerHTML += '👽'
             })
 
-            const tiempoExpiracion = ${user.exp} * 1000; // Convertir a milisegundos
+            const tiempoExpiracion = ${user.exp} * 1000; 
             const tiempoRestante = tiempoExpiracion - Date.now();
             setTimeout(function() {
                 alert("Sesión expirada, hasta pronto.");
@@ -180,6 +165,6 @@ app.get('/area51', verificar, (req, res) => {
         </script>
         `);
     } catch (error) {
-        res.status(401).send('Error: ' + error.message); //EN QUE SITUACION OCURRIRIA, EN QUE NO ESTUVIERA VERIFICADO O CUANDO VENZA EL TOKEN?
+        res.status(401).send('Error: ' + error.message); 
     }
 });
